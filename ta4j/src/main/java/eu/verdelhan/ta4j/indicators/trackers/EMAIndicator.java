@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Marc de Verdelhan
+ * Copyright (c) 2014 Marc de Verdelhan & respective authors
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -34,13 +34,12 @@ public class EMAIndicator implements Indicator<Double> {
 
     private final int timeFrame;
 
+    private final double multiplier;
+
     public EMAIndicator(Indicator<? extends Number> indicator, int timeFrame) {
         this.indicator = indicator;
         this.timeFrame = timeFrame;
-    }
-
-    private double multiplier() {
-        return 2 / (double) (timeFrame + 1);
+        multiplier = 2 / (double) (timeFrame + 1);
     }
 
     @Override
@@ -51,8 +50,8 @@ public class EMAIndicator implements Indicator<Double> {
         if(index == 0) {
             return indicator.getValue(0).doubleValue();
         }
-        double emaPrev = getValue(index - 1).doubleValue();
-        return ((indicator.getValue(index).doubleValue() - emaPrev) * multiplier()) + emaPrev;
+        double emaPrev = getValue(index - 1);
+        return ((indicator.getValue(index).doubleValue() - emaPrev) * multiplier) + emaPrev;
     }
 
     @Override
