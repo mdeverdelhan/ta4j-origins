@@ -35,13 +35,12 @@ public class EMAIndicator extends CachedIndicator<Double> {
 
     private final int timeFrame;
 
+    private final double multiplier;
+
     public EMAIndicator(Indicator<? extends Number> indicator, int timeFrame) {
         this.indicator = indicator;
         this.timeFrame = timeFrame;
-    }
-
-    private double multiplier() {
-        return 2 / (double) (timeFrame + 1);
+        multiplier = 2 / (double) (timeFrame + 1);
     }
 
 
@@ -53,8 +52,8 @@ public class EMAIndicator extends CachedIndicator<Double> {
         if(index == 0) {
             return indicator.getValue(0).doubleValue();
         }
-        double emaPrev = getValue(index - 1).doubleValue();
-        return ((indicator.getValue(index).doubleValue() - emaPrev) * multiplier()) + emaPrev;
+        double emaPrev = getValue(index - 1);
+        return ((indicator.getValue(index).doubleValue() - emaPrev) * multiplier) + emaPrev;
     }
 
     @Override

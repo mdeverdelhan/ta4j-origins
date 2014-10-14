@@ -45,6 +45,6 @@ public class PPOIndicator implements Indicator<Double> {
 
     @Override
     public Double getValue(int index) {
-        return (shortTermEma.getValue(index) - longTermEma.getValue(index)) / longTermEma.getValue(index) * 100;
+        return (shortTermEma.getValue(index) / longTermEma.getValue(index) - 1) * 100;
     }
 }
