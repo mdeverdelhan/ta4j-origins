@@ -59,6 +59,7 @@ public class StandardDeviationIndicator extends CachedIndicator<TADecimal> {
             TADecimal pow = indicator.getValue(i).minus(average).pow(2);
             standardDeviation = standardDeviation.plus(pow);
         }
+        standardDeviation = standardDeviation.dividedBy(new TADecimal(index + 1));
         return standardDeviation.sqrt();
     }
 
