@@ -121,6 +121,15 @@ public class TimeSeries {
     public String getName() {
         return name;
     }
+    
+    
+    
+    /**
+     * @return the size of the tick array
+     */
+    public int size() {
+    	return ticks.size();
+    }
 
     /**
      * @param i an index
