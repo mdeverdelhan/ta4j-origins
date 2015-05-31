@@ -383,6 +383,18 @@ public class TimeSeriesTest {
         List<Trade> allTrades = series.run(strategy).getTrades();
         assertEquals(2, allTrades.size());
     }
+    
+    @Test
+    public void runOnWholeSeriesWithAmount() {
+        TimeSeries series = new MockTimeSeries(20d, 40d, 60d, 10d, 30d, 50d, 0d, 20d, 40d);
+
+        List<Trade> allTrades = series.run(strategy,OrderType.BUY, Decimal.HUNDRED, true).getTrades();
+        
+        assertEquals(2, allTrades.size());
+        assertEquals(Decimal.HUNDRED, allTrades.get(0).getEntry().getAmount());
+        assertEquals(Decimal.HUNDRED, allTrades.get(1).getEntry().getAmount());
+
+    }
 
     @Test
     public void runOnSlice() {

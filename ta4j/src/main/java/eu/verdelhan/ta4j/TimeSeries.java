@@ -96,6 +96,7 @@ public class TimeSeries {
 
     /**
      * Constructor of an unnamed series.
+     *
      * @param timePeriod the time period (between 2 ticks)
      */
     public TimeSeries(Period timePeriod) {
@@ -303,7 +304,7 @@ public class TimeSeries {
      * @return a constrained {@link TimeSeries time series} which is a sub-set of the current series
      */
     public TimeSeries subseries(int beginIndex, Period duration) {
-        
+
         // Calculating the sub-series interval
         DateTime beginInterval = getTick(beginIndex).getEndTime();
         DateTime endInterval = beginInterval.plus(duration);
@@ -322,7 +323,7 @@ public class TimeSeries {
             // --> Incrementing the number of ticks in the subseries
             subseriesNbTicks++;
         }
-        
+
         return subseries(beginIndex, beginIndex + subseriesNbTicks - 1);
     }
 
@@ -389,19 +390,35 @@ public class TimeSeries {
 
     /**
      * Runs the strategy over the series.
+     * <p>
+     * Opens the trades with {@link OrderType.BUY} orders.
+     *
      * @param strategy the trading strategy
      * @param orderType the {@link OrderType} used to open the trades
      * @return the trading record coming from the run
      */
     public TradingRecord run(Strategy strategy, OrderType orderType) {
+        return run(strategy, orderType, Decimal.NaN, false);
+
+    }
+
+    /**
+     * Runs the strategy over the series.
+     * <p>
+     * @param strategy the trading strategy
+     * @param orderType the {@link OrderType} used to open the trades
+     * @param amount the amount used to open the trades
+     * @param withEntryPrice store the entry price in the trade record or not
+     * @return the trading record coming from the run
+     */
+    public TradingRecord run(Strategy strategy, OrderType orderType, Decimal amount, Boolean withEntryPrice) {
 
         log.trace("Running strategy: {} (starting with {})", strategy, orderType);
         TradingRecord tradingRecord = new TradingRecord(orderType);
-
         for (int i = beginIndex; i <= endIndex; i++) {
-            // For each tick in the sub-series...
+            // For each tick in the sub-series...       
             if (strategy.shouldOperate(i, tradingRecord)) {
-                tradingRecord.operate(i);
+                tradingRecord.operate(i, getEntryPrice(i, withEntryPrice), amount);
             }
         }
 
@@ -411,14 +428,25 @@ public class TimeSeries {
             for (int i = endIndex + 1; i < ticks.size(); i++) {
                 // For each tick out of sub-series bound...
                 // --> Trying to close the last trade
+                
                 if (strategy.shouldOperate(i, tradingRecord)) {
-                    tradingRecord.operate(i);
+                    tradingRecord.operate(i, getEntryPrice(i, withEntryPrice), amount);
                     break;
                 }
             }
         }
         return tradingRecord;
     }
+
+    /**
+    * get the entry price if needed
+    * @param index the tick index
+    * @param fromTick price from tick or Decimal.Nan
+    * @return 
+    */
+    private Decimal getEntryPrice(int index, Boolean fromTick) {
+        return(fromTick)? ticks.get(index).getClosePrice():Decimal.NaN;
+        }
 
     /**
      * Computes the time period of the series.
@@ -429,7 +457,7 @@ public class TimeSeries {
         for (int i = beginIndex; i < endIndex; i++) {
             // For each tick interval...
             // Looking for the minimum period.
-            long currentPeriodMillis = getTick(i+1).getEndTime().getMillis() - getTick(i).getEndTime().getMillis();
+            long currentPeriodMillis = getTick(i + 1).getEndTime().getMillis() - getTick(i).getEndTime().getMillis();
             if (minPeriod == null) {
                 minPeriod = new Period(currentPeriodMillis);
             } else {
