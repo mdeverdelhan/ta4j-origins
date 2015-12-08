@@ -45,9 +45,9 @@ public class AverageTrueRangeIndicatorTest {
         AverageTrueRangeIndicator atr = new AverageTrueRangeIndicator(new MockTimeSeries(ticks), 3);
         
         assertDecimalEquals(atr.getValue(0), 7d);
-        assertDecimalEquals(atr.getValue(1), 7d*2/3 + 6d/3);
-        assertDecimalEquals(atr.getValue(2), (7d*2/3 + 6d/3)*2/3 + 9d/3);
-        assertDecimalEquals(atr.getValue(3), ((7d*2/3 + 6d/3)*2/3 + 9/3)*2/3 + 3d/3);
-        assertDecimalEquals(atr.getValue(4), (((7d*2/3 + 6d/3)*2/3 + 9/3)*2/3 + 3d/3)*2/3 + 15d/3);
+        assertDecimalEquals(atr.getValue(1), (7d*2 + 6d)/3);
+        assertDecimalEquals(atr.getValue(2), (((7d*2 + 6d)/3)*2 + 9d)/3);
+        assertDecimalEquals(atr.getValue(3), (((((7d*2 + 6d)/3)*2 + 9)/3)*2 + 3d)/3);
+        assertDecimalEquals(atr.getValue(4), (((((((7d*2 + 6d)/3)*2 + 9)/3)*2 + 3d)/3)*2 + 15d)/3);
     }
 }
