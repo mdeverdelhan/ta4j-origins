@@ -69,8 +69,20 @@ public class TimeSeries {
      * @param ticks the list of ticks of the series
      */
     public TimeSeries(String name, List<Tick> ticks) {
-        this(name, ticks, 0, ticks.size() - 1, false);
+        this(name, ticks, null);
     }
+
+    /**
+     * Constructor.
+     * @param name the name of the series
+     * @param ticks the list of ticks of the series
+     * @param timePeriod the time period between ticks. If not supplied then it will be calculated by iterating over the
+     *                   entire dataset
+     */
+    public TimeSeries(String name, List<Tick> ticks, Period timePeriod) {
+        this(name, ticks, 0, ticks.size() - 1, false, timePeriod);
+    }
+
 
     /**
      * Constructor of an unnamed series.
@@ -110,8 +122,10 @@ public class TimeSeries {
      * @param beginIndex the begin index (inclusive) of the time series
      * @param endIndex the end index (inclusive) of the time series
      * @param subSeries true if the current series is a sub-series, false otherwise
+     * @param timePeriod the time period between ticks. If not supplied then it will be calculated by iterating over the
+     *                   entire dataset
      */
-    private TimeSeries(String name, List<Tick> ticks, int beginIndex, int endIndex, boolean subSeries) {
+    private TimeSeries(String name, List<Tick> ticks, int beginIndex, int endIndex, boolean subSeries, Period timePeriod) {
         // TODO: add null checks and out of bounds checks
         if (endIndex < beginIndex - 1) {
             throw new IllegalArgumentException("end cannot be < than begin - 1");
@@ -121,7 +135,11 @@ public class TimeSeries {
         this.beginIndex = beginIndex;
         this.endIndex = endIndex;
         this.subSeries = subSeries;
-        computeTimePeriod();
+        this.timePeriod = timePeriod;
+        if(timePeriod == null)
+        {
+            computeTimePeriod();
+        }
     }
 
     /**
@@ -288,10 +306,25 @@ public class TimeSeries {
      * @return a constrained {@link TimeSeries time series} which is a sub-set of the current series
      */
     public TimeSeries subseries(int beginIndex, int endIndex) {
+        return subseries(beginIndex, endIndex, null);
+    }
+
+    /**
+     * Returns a new time series which is a view of a subset of the current series.
+     * <p>
+     * The new series has begin and end indexes which correspond to the bounds of the sub-set into the full series.<br>
+     * The tick of the series are shared between the original time series and the returned one (i.e. no copy).
+     * @param beginIndex the begin index (inclusive) of the time series
+     * @param endIndex the end index (inclusive) of the time series
+     * @param timePeriod the time period between ticks. If not supplied then it will be calculated by iterating over the
+     *                   entire dataset
+     * @return a constrained {@link TimeSeries time series} which is a sub-set of the current series
+     */
+    public TimeSeries subseries(int beginIndex, int endIndex, Period timePeriod) {
         if (maximumTickCount != Integer.MAX_VALUE) {
             throw new IllegalStateException("Cannot create a sub-series from a time series for which a maximum tick count has been set");
         }
-        return new TimeSeries(name, ticks, beginIndex, endIndex, true);
+        return new TimeSeries(name, ticks, beginIndex, endIndex, true, timePeriod);
     }
 
     /**
