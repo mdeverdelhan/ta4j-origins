@@ -20,10 +20,10 @@
         
         <!-- Decimal implementation -->
         <dependency>
-			<groupId>org.decimal4j</groupId>
-			<artifactId>decimal4j</artifactId>
-			<version>1.0.1</version>
-		</dependency>
+	    <groupId>org.decimal4j</groupId>
+	    <artifactId>decimal4j</artifactId>
+	    <version>1.0.1</version>
+	</dependency>
 
         <!-- Logging facade -->
         <dependency>
