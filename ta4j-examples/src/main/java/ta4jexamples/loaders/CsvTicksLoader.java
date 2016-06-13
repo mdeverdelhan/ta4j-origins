@@ -44,6 +44,8 @@ public class CsvTicksLoader {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    private CsvTicksLoader() {}
+
     /**
      * @return a time series from Apple Inc. ticks.
      */

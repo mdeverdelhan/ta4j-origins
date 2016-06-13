@@ -42,6 +42,8 @@ import org.joda.time.Period;
  */
 public class CsvTradesLoader {
 
+    private CsvTradesLoader() {}
+
     /**
      * @return a time series from Bitstamp (bitcoin exchange) trades
      */

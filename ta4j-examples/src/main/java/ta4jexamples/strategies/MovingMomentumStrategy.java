@@ -45,6 +45,8 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class MovingMomentumStrategy {
 
+    private MovingMomentumStrategy() {}
+
     /**
      * @param series a time series
      * @return a moving momentum strategy
