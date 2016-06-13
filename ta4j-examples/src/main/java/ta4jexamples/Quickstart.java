@@ -96,9 +96,6 @@ public class Quickstart {
 
         // Analysis
 
-        // Getting the cash flow of the resulting trades
-        CashFlow cashFlow = new CashFlow(series, tradingRecord);
-
         // Getting the profitable trades ratio
         AnalysisCriterion profitTradesRatio = new AverageProfitableTradesCriterion();
         System.out.println("Profitable trades ratio: " + profitTradesRatio.calculate(series, tradingRecord));
