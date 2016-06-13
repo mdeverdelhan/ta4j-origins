@@ -49,7 +49,6 @@ public class DirectionalMovementIndicator extends CachedIndicator<Decimal>{
     protected Decimal calculate(int index) {
         Decimal dupValue = dup.getValue(index);
         Decimal ddownValue = ddown.getValue(index);
-        Decimal difference = dupValue.minus(ddownValue);
         return dupValue.minus(ddownValue).abs().dividedBy(dupValue.plus(ddownValue)).multipliedBy(Decimal.HUNDRED);
     }
 
