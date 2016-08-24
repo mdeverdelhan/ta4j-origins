@@ -68,10 +68,7 @@ public class RSIIndicator extends CachedIndicator<Decimal> {
         }
         Decimal averageGain = averageGainIndicator.getValue(index);
         Decimal averageLoss = averageLossIndicator.getValue(index);
-        Decimal rs = averageGain.dividedBy(averageLoss);
-        if (rs.isNaN())
-            return Decimal.HUNDRED;
-        else
-            return rs;
+        return averageLoss.equals(Decimal.ZERO) ?
+                Decimal.HUNDRED : averageGain.dividedBy(averageLoss);
     }
 }
