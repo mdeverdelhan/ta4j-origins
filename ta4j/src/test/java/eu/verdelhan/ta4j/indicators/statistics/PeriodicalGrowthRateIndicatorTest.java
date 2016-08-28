@@ -23,10 +23,14 @@
 package eu.verdelhan.ta4j.indicators.statistics;
 
 import eu.verdelhan.ta4j.Decimal;
+import eu.verdelhan.ta4j.Rule;
+import eu.verdelhan.ta4j.Strategy;
 import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
 import eu.verdelhan.ta4j.mocks.MockTimeSeries;
+import eu.verdelhan.ta4j.trading.rules.CrossedDownIndicatorRule;
+import eu.verdelhan.ta4j.trading.rules.CrossedUpIndicatorRule;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -61,7 +65,7 @@ public class PeriodicalGrowthRateIndicatorTest {
     @Test
     public void testGetTotalReturn() { 
         PeriodicalGrowthRateIndicator gri = new PeriodicalGrowthRateIndicator(this.closePrice,5);
-        double expResult = 0.9683;
+        double expResult = 0.9564;
         double result = gri.getTotalReturn();
         assertEquals(expResult, result,0.01);
 
@@ -78,9 +82,36 @@ public class PeriodicalGrowthRateIndicatorTest {
         assertEquals(gri.getValue(0), Decimal.NaN);
         assertEquals(gri.getValue(4), Decimal.NaN);
         assertDecimalEquals(gri.getValue(5), -0.0268);
+        assertDecimalEquals(gri.getValue(6), 0.0541);
         assertDecimalEquals(gri.getValue(10), -0.0495);
-        assertEquals(gri.getValue(28), Decimal.NaN);
+        assertDecimalEquals(gri.getValue(21), 0.2009);
+        assertDecimalEquals(gri.getValue(24), 0.0220);
+        assertEquals(gri.getValue(25), Decimal.NaN);
+        assertEquals(gri.getValue(26), Decimal.NaN);
     }
+    
+    /**
+     * Test if rules & strategies are working with NaN-Values
+     */
+    @Test
+    public void testStrategies() { 
+        
+        PeriodicalGrowthRateIndicator gri = new PeriodicalGrowthRateIndicator(this.closePrice,5);
+
+        // Rules
+        Rule buyingRule = new CrossedUpIndicatorRule(gri,Decimal.valueOf("0.0")); 
+        Rule sellingRule = new CrossedDownIndicatorRule(gri,Decimal.valueOf("0.0"));     
+        
+        Strategy strategy = new Strategy(buyingRule, sellingRule);
+                
+        // Check trades
+        int result = mockdata.run(strategy).getTradeCount();             
+        int expResult = 3;
+        
+        assertEquals(expResult, result,0.01);
+   
+    }
+
     
 
     
