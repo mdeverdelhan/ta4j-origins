@@ -73,7 +73,7 @@ public class PeriodicalGrowthRateIndicator extends CachedIndicator<Decimal> {
     public PeriodicalGrowthRateIndicator(Indicator<Decimal> indicator, int timeFrame) {
         super(indicator);
         this.indicator = indicator;
-        this.timeFrame = timeFrame;
+        this.timeFrame = timeFrame; 
     }
     
     /**
@@ -94,10 +94,11 @@ public class PeriodicalGrowthRateIndicator extends CachedIndicator<Decimal> {
             int index = i*this.timeFrame;
             Decimal currentReturn = this.getValue(index);
             
-            currentReturn = currentReturn.plus(Decimal.ONE);
-            
-            totalProduct = totalProduct.multipliedBy(currentReturn);
-
+            if (currentReturn != Decimal.NaN) // Skip NaN at the end of a series
+            {
+                currentReturn = currentReturn.plus(Decimal.ONE);
+                totalProduct = totalProduct.multipliedBy(currentReturn);
+            }
         }
 
         return (Math.pow(totalProduct.toDouble(),(1.0 /completeTimeframes)));
@@ -116,6 +117,9 @@ public class PeriodicalGrowthRateIndicator extends CachedIndicator<Decimal> {
         Decimal currentValue = this.indicator.getValue(index);
         
         int helpPartialTimeframe = index % this.timeFrame;
+        double helpFullTimeframes = Math.floor((double)this.indicator.getTimeSeries().getTickCount() / (double)this.timeFrame);
+        double helpIndexTimeframes = (double)index / (double)this.timeFrame;
+
         double helpPartialTimeframeHeld = (double)helpPartialTimeframe / (double)this.timeFrame;
         
         double PartialTimeframeHeld;
@@ -128,25 +132,22 @@ public class PeriodicalGrowthRateIndicator extends CachedIndicator<Decimal> {
             PartialTimeframeHeld = helpPartialTimeframeHeld;
         }
         
-        // Avoid calculations of returns if index number is below timeframe
-        // e.g. timeframe = 365, index = 5 => no calculation 
+        // Avoid calculations of returns:
+        // a.) if index number is below timeframe
+        //     e.g. timeframe = 365, index = 5 => no calculation 
+        // b.) if at the end of a series incomplete timeframes would remain
         Decimal timeframedReturn = Decimal.NaN;
         Decimal movingSimpleReturn = Decimal.NaN;
-        if (index >= this.timeFrame)
-        {
-            if (PartialTimeframeHeld == 1.0)
-            {    
-                
+        if ((index >= this.timeFrame) &&                // a.)
+           (helpIndexTimeframes < helpFullTimeframes))  // b.)
+        {      
                 Decimal movingValue = this.indicator.getValue(index - this.timeFrame);
                 movingSimpleReturn = (currentValue.minus(movingValue)).dividedBy(movingValue);
 
                 double timeframedReturn_double = Math.pow((1 + movingSimpleReturn.toDouble()),(1/PartialTimeframeHeld)) - 1;
-                timeframedReturn = Decimal.valueOf(timeframedReturn_double);
-            
-            }
-            
+                timeframedReturn = Decimal.valueOf(timeframedReturn_double);           
         }
-
+        
         return timeframedReturn;
        
         
