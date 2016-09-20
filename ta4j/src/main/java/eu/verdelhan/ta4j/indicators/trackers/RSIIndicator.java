@@ -68,6 +68,7 @@ public class RSIIndicator extends CachedIndicator<Decimal> {
         }
         Decimal averageGain = averageGainIndicator.getValue(index);
         Decimal averageLoss = averageLossIndicator.getValue(index);
-        return averageGain.dividedBy(averageLoss);
+        return averageLoss.equals(Decimal.ZERO) ?
+                Decimal.HUNDRED : averageGain.dividedBy(averageLoss);
     }
 }
