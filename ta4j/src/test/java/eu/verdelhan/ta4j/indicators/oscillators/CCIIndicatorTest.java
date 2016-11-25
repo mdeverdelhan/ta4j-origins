@@ -59,7 +59,7 @@ public class CCIIndicatorTest {
         // Incomplete time frame
         assertDecimalEquals(cci.getValue(0), 0);
         assertDecimalEquals(cci.getValue(1), -66.6667);
-        assertDecimalEquals(cci.getValue(2), -100d);
+        assertDecimalEquals(cci.getValue(2), -99.99969063d);
         assertDecimalEquals(cci.getValue(10), 14.365);
         assertDecimalEquals(cci.getValue(11), 54.2544);
 

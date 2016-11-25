@@ -22,22 +22,21 @@
  */
 package eu.verdelhan.ta4j;
 
-import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 
+import org.decimal4j.immutable.Decimal8f;
+
 /**
- * Immutable, arbitrary-precision signed decimal numbers designed for technical analysis.
+ * Immutable, scale 8 precision signed decimal numbers designed for technical analysis.
  * <p>
- * A {@code Decimal} consists of a {@code BigDecimal} with arbitrary {@link MathContext} (precision and rounding mode).
+ * A {@code Decimal} consists of a {@code Decimal8f} with a number of 8 digits to the right of the decimal point
  *
- * @see BigDecimal
+ * @see Decimal8f
  * @see MathContext
  * @see RoundingMode
  */
 public final class Decimal implements Comparable<Decimal> {
-
-    public static final MathContext MATH_CONTEXT = new MathContext(32, RoundingMode.HALF_UP);
 
     /** Not-a-Number instance (infinite error) */
     public static final Decimal NaN = new Decimal();
@@ -50,7 +49,7 @@ public final class Decimal implements Comparable<Decimal> {
     public static final Decimal HUNDRED = valueOf(100);
     public static final Decimal THOUSAND = valueOf(1000);
 
-    private final BigDecimal delegate;
+    private final Decimal8f delegate;
 
     /**
      * Constructor.
@@ -65,7 +64,7 @@ public final class Decimal implements Comparable<Decimal> {
      * @param val the string representation of the decimal value
      */
     private Decimal(String val) {
-        delegate = new BigDecimal(val, MATH_CONTEXT);
+        delegate = new Decimal8f(val);
     }
 
     /**
@@ -73,18 +72,18 @@ public final class Decimal implements Comparable<Decimal> {
      * @param val the double value
      */
     private Decimal(double val) {
-        delegate = new BigDecimal(val, MATH_CONTEXT);
+        delegate = Decimal8f.valueOf(val);
     }
 
     private Decimal(int val) {
-        delegate = new BigDecimal(val, MATH_CONTEXT);
+        delegate = Decimal8f.valueOf(val);
     }
 
     private Decimal(long val) {
-        delegate = new BigDecimal(val, MATH_CONTEXT);
+        delegate = Decimal8f.valueOf(val);
     }
 
-    private Decimal(BigDecimal val) {
+    private Decimal(Decimal8f val) {
         delegate = val;
     }
 
@@ -93,13 +92,13 @@ public final class Decimal implements Comparable<Decimal> {
      * with rounding according to the context settings.
      * @param augend value to be added to this {@code Decimal}.
      * @return {@code this + augend}, rounded as necessary
-     * @see BigDecimal#add(java.math.BigDecimal, java.math.MathContext)
+     * @see Decimal8f#add(org.decimal4j.api.Decimal)
      */
     public Decimal plus(Decimal augend) {
         if ((this == NaN) || (augend == NaN)) {
             return NaN;
         }
-        return new Decimal(delegate.add(augend.delegate, MATH_CONTEXT));
+        return new Decimal(delegate.add(augend.delegate));
     }
 
     /**
@@ -107,13 +106,13 @@ public final class Decimal implements Comparable<Decimal> {
      * with rounding according to the context settings.
      * @param subtrahend value to be subtracted from this {@code Decimal}.
      * @return {@code this - subtrahend}, rounded as necessary
-     * @see BigDecimal#subtract(java.math.BigDecimal, java.math.MathContext)
+     * @see Decimal8f#subtract(org.decimal4j.api.Decimal)
      */
     public Decimal minus(Decimal subtrahend) {
         if ((this == NaN) || (subtrahend == NaN)) {
             return NaN;
         }
-        return new Decimal(delegate.subtract(subtrahend.delegate, MATH_CONTEXT));
+        return new Decimal(delegate.subtract(subtrahend.delegate));
     }
 
     /**
@@ -121,13 +120,13 @@ public final class Decimal implements Comparable<Decimal> {
      * with rounding according to the context settings.
      * @param multiplicand value to be multiplied by this {@code Decimal}.
      * @return {@code this * multiplicand}, rounded as necessary
-     * @see BigDecimal#multiply(java.math.BigDecimal, java.math.MathContext)
+     * @see Decimal8f#multiply(org.decimal4j.api.Decimal)y 
      */
     public Decimal multipliedBy(Decimal multiplicand) {
         if ((this == NaN) || (multiplicand == NaN)) {
             return NaN;
         }
-        return new Decimal(delegate.multiply(multiplicand.delegate, MATH_CONTEXT));
+        return new Decimal(delegate.multiply(multiplicand.delegate));
     }
 
     /**
@@ -135,13 +134,13 @@ public final class Decimal implements Comparable<Decimal> {
      * with rounding according to the context settings.
      * @param divisor value by which this {@code Decimal} is to be divided.
      * @return {@code this / divisor}, rounded as necessary
-     * @see BigDecimal#divide(java.math.BigDecimal, java.math.MathContext)
+     * @see Decimal8f#divide(org.decimal4j.api.Decimal)
      */
     public Decimal dividedBy(Decimal divisor) {
         if ((this == NaN) || (divisor == NaN) || divisor.isZero()) {
             return NaN;
         }
-        return new Decimal(delegate.divide(divisor.delegate, MATH_CONTEXT));
+        return new Decimal(delegate.divide(divisor.delegate));
     }
 
     /**
@@ -149,13 +148,13 @@ public final class Decimal implements Comparable<Decimal> {
      * with rounding according to the context settings.
      * @param divisor value by which this {@code Decimal} is to be divided.
      * @return {@code this % divisor}, rounded as necessary.
-     * @see BigDecimal#remainder(java.math.BigDecimal, java.math.MathContext)
+     * @see Decimal8f#remainder(org.decimal4j.api.Decimal)
      */
     public Decimal remainder(Decimal divisor) {
         if ((this == NaN) || (divisor == NaN) || divisor.isZero()) {
             return NaN;
         }
-        return new Decimal(delegate.remainder(divisor.delegate, MATH_CONTEXT));
+        return new Decimal(delegate.remainder(divisor.delegate));
     }
 
 
@@ -163,13 +162,13 @@ public final class Decimal implements Comparable<Decimal> {
      * Returns a {@code Decimal} whose value is <tt>(this<sup>n</sup>)</tt>.
      * @param n power to raise this {@code Decimal} to.
      * @return <tt>this<sup>n</sup></tt>
-     * @see BigDecimal#pow(int, java.math.MathContext)
+     * @see Decimal8f#pow(int)
      */
     public Decimal pow(int n) {
         if (this == NaN) {
             return NaN;
         }
-        return new Decimal(delegate.pow(n, MATH_CONTEXT));
+        return new Decimal(delegate.pow(n));
     }
     
     /**
@@ -374,7 +373,7 @@ public final class Decimal implements Comparable<Decimal> {
     /**
      * Converts this {@code Decimal} to a {@code double}.
      * @return this {@code Decimal} converted to a {@code double}
-     * @see BigDecimal#doubleValue()
+     * @see Decimal8f#doubleValue()
      */
     public double toDouble() {
         if (this == NaN) {
