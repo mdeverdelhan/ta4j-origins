@@ -24,7 +24,7 @@ package eu.verdelhan.ta4j.analysis.criteria;
 
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradingRecord;
+import eu.verdelhan.ta4j.TradesRecord;
 
 /**
  * Number of trades criterion.
@@ -32,8 +32,8 @@ import eu.verdelhan.ta4j.TradingRecord;
 public class NumberOfTradesCriterion extends AbstractAnalysisCriterion {
 
     @Override
-    public double calculate(TimeSeries series, TradingRecord tradingRecord) {
-        return tradingRecord.getTradeCount();
+    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
+        return tradesRecord.getTradeCount();
     }
 
     @Override

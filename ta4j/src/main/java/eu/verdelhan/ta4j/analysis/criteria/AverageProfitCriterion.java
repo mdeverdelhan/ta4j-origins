@@ -25,7 +25,7 @@ package eu.verdelhan.ta4j.analysis.criteria;
 import eu.verdelhan.ta4j.AnalysisCriterion;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradingRecord;
+import eu.verdelhan.ta4j.TradesRecord;
 
 /**
  * Average profit criterion.
@@ -39,12 +39,12 @@ public class AverageProfitCriterion extends AbstractAnalysisCriterion {
     private AnalysisCriterion numberOfTicks = new NumberOfTicksCriterion();
 
     @Override
-    public double calculate(TimeSeries series, TradingRecord tradingRecord) {
-        double ticks = numberOfTicks.calculate(series, tradingRecord);
+    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
+        double ticks = numberOfTicks.calculate(series, tradesRecord);
         if (ticks == 0) {
             return 1;
         }
-        return Math.pow(totalProfit.calculate(series, tradingRecord), 1d / ticks);
+        return Math.pow(totalProfit.calculate(series, tradesRecord), 1d / ticks);
     }
 
     @Override

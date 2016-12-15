@@ -20,36 +20,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eu.verdelhan.ta4j.analysis.criteria;
-
-import eu.verdelhan.ta4j.AnalysisCriterion;
-import eu.verdelhan.ta4j.TimeSeries;
-import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradesRecord;
+package eu.verdelhan.ta4j;
 
 /**
- * Reward risk ratio criterion.
- * <p>
- * (i.e. the {@link TotalProfitCriterion total profit} over the {@link MaximumDrawdownCriterion maximum drawdown}.
+ * A collection of trades, used by {@link AnalysisCriterion analysis criteria} to calculate statistics
  */
-public class RewardRiskRatioCriterion extends AbstractAnalysisCriterion {
+public interface TradesRecord extends Iterable<Trade> {
 
-    private AnalysisCriterion totalProfit = new TotalProfitCriterion();
+	/**
+	 * @return The amount of record trades
+	 */
+	public int getTradeCount();
 
-    private AnalysisCriterion maxDrawdown = new MaximumDrawdownCriterion();
-
-    @Override
-    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
-        return totalProfit.calculate(series, tradesRecord) / maxDrawdown.calculate(series, tradesRecord);
-    }
-
-    @Override
-    public boolean betterThan(double criterionValue1, double criterionValue2) {
-        return criterionValue1 > criterionValue2;
-    }
-
-    @Override
-    public double calculate(TimeSeries series, Trade trade) {
-        return totalProfit.calculate(series, trade) / maxDrawdown.calculate(series, trade);
-    }
+	/**
+	 * @return The trades that have not yet been closed and therefore not yet been recorded
+	 */
+	public Iterable<Trade> getOpenTrades();
+	
 }

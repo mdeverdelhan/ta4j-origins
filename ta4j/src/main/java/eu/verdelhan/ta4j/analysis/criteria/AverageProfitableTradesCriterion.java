@@ -25,7 +25,7 @@ package eu.verdelhan.ta4j.analysis.criteria;
 import eu.verdelhan.ta4j.Decimal;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradingRecord;
+import eu.verdelhan.ta4j.TradesRecord;
 
 /**
  * Average profitable trades criterion.
@@ -52,9 +52,9 @@ public class AverageProfitableTradesCriterion extends AbstractAnalysisCriterion 
     }
 
     @Override
-    public double calculate(TimeSeries series, TradingRecord tradingRecord) {
+    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
         int numberOfProfitable = 0;
-        for (Trade trade : tradingRecord.getTrades()) {
+        for (Trade trade : tradesRecord) {
             int entryIndex = trade.getEntry().getIndex();
             int exitIndex = trade.getExit().getIndex();
 
@@ -70,7 +70,7 @@ public class AverageProfitableTradesCriterion extends AbstractAnalysisCriterion 
                 numberOfProfitable++;
             }
         }
-        return ((double) numberOfProfitable) / tradingRecord.getTradeCount();
+        return ((double) numberOfProfitable) / tradesRecord.getTradeCount();
     }
 
     @Override

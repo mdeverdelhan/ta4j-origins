@@ -22,11 +22,13 @@
  */
 package eu.verdelhan.ta4j;
 
-import eu.verdelhan.ta4j.Order.OrderType;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
+
+import eu.verdelhan.ta4j.Order.OrderType;
 
 /**
  * A history/record of a trading session.
@@ -38,7 +40,7 @@ import java.util.List;
  * <li>analyze the performance of a trading strategy
  * </ul>
  */
-public class TradingRecord implements Serializable {
+public class TradingRecord implements Serializable, TradesRecord {
 
 	private static final long serialVersionUID = -4436851731855891220L;
 
@@ -111,6 +113,14 @@ public class TradingRecord implements Serializable {
      */
     public Trade getCurrentTrade() {
         return currentTrade;
+    }
+    
+    /**
+     * @return an iterator of the open trade
+     */
+    @Override
+    public Iterable<Trade> getOpenTrades() {
+    	return Arrays.asList(currentTrade);
     }
     
     /**
@@ -292,4 +302,10 @@ public class TradingRecord implements Serializable {
             currentTrade = new Trade(startingType);
         }
     }
+    
+    @Override
+    public Iterator<Trade> iterator() {
+    	return trades.iterator();
+    }
+
 }
