@@ -22,13 +22,15 @@
  */
 package eu.verdelhan.ta4j.indicators.helpers;
 
-import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.mocks.MockTick;
 import eu.verdelhan.ta4j.mocks.MockTimeSeries;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Test;
+
+import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
 
 public class AverageTrueRangeIndicatorTest {
 
@@ -42,10 +44,10 @@ public class AverageTrueRangeIndicatorTest {
         ticks.add(new MockTick(0, 0, 0, 2));
         AverageTrueRangeIndicator atr = new AverageTrueRangeIndicator(new MockTimeSeries(ticks), 3);
         
-        assertDecimalEquals(atr.getValue(0), 1);
-        assertDecimalEquals(atr.getValue(1), 8d/3);
-        assertDecimalEquals(atr.getValue(2), 8d/3 * 2d/3 + 3);
-        assertDecimalEquals(atr.getValue(3), (8d/3 * 2d/3 + 3) * 2d/3 + 1);
-        assertDecimalEquals(atr.getValue(4), ((8d/3 * 2d/3 + 3) * 2d/3 + 1) * 2d/3 + 15d/3);
+        assertDecimalEquals(atr.getValue(0), 7d);
+        assertDecimalEquals(atr.getValue(1), (7d*2 + 6d)/3);
+        assertDecimalEquals(atr.getValue(2), (((7d*2 + 6d)/3)*2 + 9d)/3);
+        assertDecimalEquals(atr.getValue(3), (((((7d*2 + 6d)/3)*2 + 9)/3)*2 + 3d)/3);
+        assertDecimalEquals(atr.getValue(4), (((((((7d*2 + 6d)/3)*2 + 9)/3)*2 + 3d)/3)*2 + 15d)/3);
     }
 }

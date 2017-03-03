@@ -44,7 +44,7 @@ public class AverageTrueRangeIndicator extends RecursiveCachedIndicator<Decimal>
     @Override
     protected Decimal calculate(int index) {
         if (index == 0) {
-            return Decimal.ONE;
+            return tr.getValue(index);
         }
         Decimal nbPeriods = Decimal.valueOf(timeFrame);
         Decimal nbPeriodsMinusOne = Decimal.valueOf(timeFrame - 1);
