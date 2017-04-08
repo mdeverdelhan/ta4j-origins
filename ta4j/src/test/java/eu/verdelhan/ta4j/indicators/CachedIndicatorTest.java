@@ -25,14 +25,19 @@ package eu.verdelhan.ta4j.indicators;
 import eu.verdelhan.ta4j.Decimal;
 import eu.verdelhan.ta4j.Strategy;
 import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
+import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
 import eu.verdelhan.ta4j.indicators.simple.ConstantIndicator;
+import eu.verdelhan.ta4j.indicators.trackers.EMAIndicator;
 import eu.verdelhan.ta4j.indicators.trackers.SMAIndicator;
+import eu.verdelhan.ta4j.mocks.MockTick;
 import eu.verdelhan.ta4j.mocks.MockTimeSeries;
 import eu.verdelhan.ta4j.trading.rules.OverIndicatorRule;
 import eu.verdelhan.ta4j.trading.rules.UnderIndicatorRule;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +61,7 @@ public class CachedIndicatorTest {
 
     @Test
     public void getValueWithNullTimeSeries() {
-        
+
         ConstantIndicator<Decimal> constant = new ConstantIndicator<Decimal>(Decimal.TEN);
         assertEquals(Decimal.TEN, constant.getValue(0));
         assertEquals(Decimal.TEN, constant.getValue(100));
@@ -95,7 +100,7 @@ public class CachedIndicatorTest {
         // Theoretical values for SMA(2) cache: 0, 0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5
         timeSeries.setMaximumTickCount(6);
         // Theoretical values for SMA(2) cache: null, null, 2, 2.5, 3.5, 4.5, 5.5, 6.5
-        
+
         Strategy strategy = new Strategy(
                 new OverIndicatorRule(sma, Decimal.THREE),
                 new UnderIndicatorRule(sma, Decimal.THREE)
@@ -106,11 +111,9 @@ public class CachedIndicatorTest {
         // As we return the first tick/result found for the removed ticks:
         // -> Approximated values for ClosePrice cache: 2, 2, 2, 3, 4, 5, 6, 7
         // -> Approximated values for SMA(2) cache: 2, 2, 2, 2.5, 3.5, 4.5, 5.5, 6.5
-
         // Then enters/exits are also approximated:
         // -> shouldEnter results: false, false, false, false, true, true, true, true
         // -> shouldExit results: true, true, true, true, false, false, false, false
-
         assertFalse(strategy.shouldEnter(0));
         assertTrue(strategy.shouldExit(0));
         assertFalse(strategy.shouldEnter(1));
@@ -134,10 +137,33 @@ public class CachedIndicatorTest {
         TimeSeries timeSeries = new MockTimeSeries(1, 1, 1, 1, 1);
         timeSeries.setMaximumTickCount(3);
         assertEquals(2, timeSeries.getRemovedTicksCount());
-        
+
         SMAIndicator sma = new SMAIndicator(new ClosePriceIndicator(timeSeries), 2);
         for (int i = 0; i < 5; i++) {
             assertDecimalEquals(sma.getValue(i), 1);
         }
+    }
+
+    @Test
+    public void removingTimeSeriesTicksDoesNotCauseStackOverflow() {
+
+        List<Tick> ticks = new ArrayList<Tick>();
+        for (int i = 0; i <= 150; i++) {
+            ticks.add(new MockTick(i));
+        }
+
+        TimeSeries timeSeries = new MockTimeSeries(ticks);
+        timeSeries.setMaximumTickCount(5);
+        assertEquals(5, timeSeries.getTickCount());
+
+        ClosePriceIndicator closePrices = new ClosePriceIndicator(timeSeries);
+        EMAIndicator ema = new EMAIndicator(closePrices, 10);
+
+        try {
+            assertDecimalEquals(ema.getValue(143), "146");
+        } catch (Throwable ex) {
+            fail(ex.getMessage());
+        }
+
     }
 }
