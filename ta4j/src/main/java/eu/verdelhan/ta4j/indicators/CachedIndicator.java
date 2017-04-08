@@ -84,7 +84,7 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
             highestResultIndex = removedTicksCount;
             result = results.get(0);
             if (result == null) {
-                result = calculate(removedTicksCount);
+                result = calculate(0);
                 results.set(0, result);
             }
         } else {
