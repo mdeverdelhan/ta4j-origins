@@ -25,6 +25,7 @@ package eu.verdelhan.ta4j;
 
 import java.io.Serializable;
 
+
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.Period;
