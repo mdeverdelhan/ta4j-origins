@@ -93,10 +93,17 @@ public class IndicatorsToChart {
          */
         // Close price
         ClosePriceIndicator closePrice = new ClosePriceIndicator(series);
+        
+        // Standard Deviation
+        StandardDeviationIndicator standardDevitation = new StandardDeviationIndicator(closePrice, 20);
+        
+        // Average 20 days
+        EMAIndicator average20 = new EMAIndicator(closePrice, 20);
+        
         // Bollinger bands
-        BollingerBandsMiddleIndicator middleBBand = new BollingerBandsMiddleIndicator(closePrice);
-        BollingerBandsLowerIndicator lowBBand = new BollingerBandsLowerIndicator(middleBBand, closePrice);
-        BollingerBandsUpperIndicator upBBand = new BollingerBandsUpperIndicator(middleBBand, closePrice);
+        BollingerBandsMiddleIndicator middleBBand = new BollingerBandsMiddleIndicator(average20);
+        BollingerBandsLowerIndicator lowBBand = new BollingerBandsLowerIndicator(middleBBand, standardDeviation);
+        BollingerBandsUpperIndicator upBBand = new BollingerBandsUpperIndicator(middleBBand, standardDeviation);
 
         /**
          * Building chart dataset
