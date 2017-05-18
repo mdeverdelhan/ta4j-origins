@@ -61,4 +61,15 @@ public class StandardDeviationIndicatorTest {
         assertDecimalEquals(sdv.getValue(3), 0);
         assertDecimalEquals(sdv.getValue(8), 0);
     }
+
+    @Test
+    public void standardDeviationFromDEFPO_2B() {
+       // having 10 data sets
+       TimeSeries localData = new MockTimeSeries(2.32,-0.81,3.41,-1.53,3.89,-0.78,4.56,-1.13,-2.89,2.62);
+        StandardDeviationIndicator sdv = new StandardDeviationIndicator(new ClosePriceIndicator(localData), 2);
+        assertDecimalEquals(sdv.getValue(0), 2.66);
+        
+    }
+    
+
 }

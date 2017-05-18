@@ -84,13 +84,13 @@ public class BuyAndSellSignalsToChart {
             double buySignalTickTime = new Minute(series.getTick(trade.getEntry().getIndex()).getEndTime().toDate()).getFirstMillisecond();
             Marker buyMarker = new ValueMarker(buySignalTickTime);
             buyMarker.setPaint(Color.GREEN);
-            buyMarker.setLabel("B");
+            buyMarker.setLabel("Buy");
             plot.addDomainMarker(buyMarker);
             // Sell signal
             double sellSignalTickTime = new Minute(series.getTick(trade.getExit().getIndex()).getEndTime().toDate()).getFirstMillisecond();
             Marker sellMarker = new ValueMarker(sellSignalTickTime);
             buyMarker.setPaint(Color.RED);
-            sellMarker.setLabel("S");
+            sellMarker.setLabel("SELL");
             plot.addDomainMarker(sellMarker);
         }
     }
