@@ -22,11 +22,15 @@
  */
 package eu.verdelhan.ta4j.indicators;
 
-import eu.verdelhan.ta4j.Indicator;
-import eu.verdelhan.ta4j.TimeSeries;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import eu.verdelhan.ta4j.Indicator;
+import eu.verdelhan.ta4j.TimeSeries;
 
 /**
  * Cached {@link Indicator indicator}.
@@ -34,6 +38,9 @@ import java.util.List;
  * Caches the constructor of the indicator. Avoid to calculate the same index of the indicator twice.
  */
 public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
+    
+    /** The logger */
+    private final static Logger log = LoggerFactory.getLogger(CachedIndicator.class);
 
     /** List of cached results */
     private final List<T> results = new ArrayList<T>();
