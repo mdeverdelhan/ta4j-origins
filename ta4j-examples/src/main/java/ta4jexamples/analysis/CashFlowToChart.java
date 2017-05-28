@@ -52,6 +52,8 @@ import ta4jexamples.strategies.MovingMomentumStrategy;
  */
 public class CashFlowToChart {
 
+    private CashFlowToChart() {}
+
     /**
      * Builds a JFreeChart time series from a Ta4j time series and an indicator.
      * @param tickSeries the ta4j time series

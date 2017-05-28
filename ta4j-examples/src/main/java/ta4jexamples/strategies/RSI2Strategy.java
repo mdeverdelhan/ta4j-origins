@@ -44,6 +44,8 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class RSI2Strategy {
 
+    private RSI2Strategy() {}
+
     /**
      * @param series a time series
      * @return a 2-period RSI strategy

@@ -49,6 +49,8 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class CandlestickChart {
 
+    private CandlestickChart() {}
+
     /**
      * Builds a JFreeChart OHLC dataset from a ta4j time series.
      * @param series a time series

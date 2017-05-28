@@ -44,6 +44,8 @@ public class TradingBotOnMovingTimeSeries {
     /** Close price of the last tick */
     private static Decimal LAST_TICK_CLOSE_PRICE;
 
+    private TradingBotOnMovingTimeSeries() {}
+
     /**
      * Builds a moving time series (i.e. keeping only the maxTickCount last ticks)
      * @param maxTickCount the number of ticks to keep in the time series (at maximum)

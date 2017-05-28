@@ -41,7 +41,9 @@ import ta4jexamples.strategies.CCICorrectionStrategy;
 public class StrategyExecutionLogging {
 
     private static final URL LOGBACK_CONF_FILE = StrategyExecutionLogging.class.getClassLoader().getResource("logback-traces.xml");
-    
+
+    private StrategyExecutionLogging() {}
+
     /**
      * Loads the Logback configuration from a resource file.
      * Only here to avoid polluting other examples with logs. Could be replaced by a simple logback.xml file in the resource folder.

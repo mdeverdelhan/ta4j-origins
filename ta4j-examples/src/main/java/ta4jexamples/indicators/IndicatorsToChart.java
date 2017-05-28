@@ -49,6 +49,8 @@ import ta4jexamples.loaders.CsvTicksLoader;
  */
 public class IndicatorsToChart {
 
+    private IndicatorsToChart() {}
+
     /**
      * Builds a JFreeChart time series from a Ta4j time series and an indicator.
      * @param tickSeries the ta4j time series

@@ -40,6 +40,8 @@ import ta4jexamples.loaders.CsvTradesLoader;
  */
 public class CCICorrectionStrategy {
 
+    private CCICorrectionStrategy() {}
+
     /**
      * @param series a time series
      * @return a CCI correction strategy

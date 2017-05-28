@@ -46,6 +46,8 @@ import ta4jexamples.strategies.RSI2Strategy;
  */
 public class WalkForward {
 
+    private WalkForward() {}
+
     /**
      * @param series the time series
      * @return a map (key: strategy, value: name) of trading strategies

@@ -46,6 +46,8 @@ public class GlobalExtremaStrategy {
     // We assume that there were at least one trade every 5 minutes during the whole week
     private static final int NB_TICKS_PER_WEEK = 12 * 24 * 7;
 
+    private GlobalExtremaStrategy() {}
+
     /**
      * @param series a time series
      * @return a global extrema strategy
