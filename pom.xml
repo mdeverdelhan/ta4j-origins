@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.verdelhan</groupId>
     <artifactId>ta4j-parent</artifactId>
-    <version>0.9-SNAPSHOT</version>
+    <version>0.8-N1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Ta4j Parent</name>
@@ -55,6 +55,7 @@
     <modules>
         <module>ta4j</module>
         <module>ta4j-examples</module>
+        <!-- module>ti-ta4j-addon</module -->
     </modules>
 
     <properties>
@@ -128,10 +129,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>3.6.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
                 </configuration>

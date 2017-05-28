@@ -22,6 +22,7 @@
  */
 package eu.verdelhan.ta4j.indicators;
 
+import eu.verdelhan.ta4j.Decimal;
 import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.TimeSeries;
 import org.slf4j.Logger;
@@ -36,7 +37,7 @@ public abstract class AbstractIndicator<T> implements Indicator<T> {
     /** The logger */
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
-    private TimeSeries series;
+    private final TimeSeries series;
 
     /**
      * Constructor.
@@ -54,5 +55,17 @@ public abstract class AbstractIndicator<T> implements Indicator<T> {
     @Override
     public String toString() {
         return getClass().getSimpleName();
+    }
+    
+    public double getTwoDigitValue(int index){
+       double val =0.0;
+       Object obj = getValue(index);
+       if (obj instanceof Decimal) {
+         val = ((Decimal)getValue(index)).toDouble();
+       } else if (obj instanceof Number) {
+          val = ((Number) obj).doubleValue();
+       }
+          
+      return Decimal.round2Digits(val);
     }
 }

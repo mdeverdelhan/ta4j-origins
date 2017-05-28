@@ -34,7 +34,7 @@ public class AverageTrueRangeIndicatorTest {
 
     @Test
     public void getValue() {
-        List<Tick> ticks = new ArrayList<Tick>();
+        List<Tick> ticks = new ArrayList<>();
         ticks.add(new MockTick(0, 12, 15, 8));
         ticks.add(new MockTick(0, 8, 11, 6));
         ticks.add(new MockTick(0, 15, 17, 14));

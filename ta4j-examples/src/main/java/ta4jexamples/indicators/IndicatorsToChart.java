@@ -89,6 +89,7 @@ public class IndicatorsToChart {
          * Getting time series
          */
         TimeSeries series = CsvTicksLoader.loadAppleIncSeries();
+        
 
         /**
          * Creating indicators
