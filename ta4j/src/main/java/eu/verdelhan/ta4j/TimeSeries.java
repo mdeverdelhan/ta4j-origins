@@ -160,6 +160,13 @@ public class TimeSeries implements Serializable {
     public Tick getLastTick() {
         return getTick(endIndex);
     }
+	
+     /**
+     * @return the ticks of the series
+     */
+    public List<Tick> getTicks(){
+	return this.ticks;
+    }
 
     /**
      * @return the number of ticks in the series
