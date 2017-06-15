@@ -23,11 +23,21 @@
 package eu.verdelhan.ta4j.indicators.trackers;
 
 import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import eu.verdelhan.ta4j.Decimal;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.mocks.MockTick;
 import eu.verdelhan.ta4j.mocks.MockTimeSeries;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVRecord;
 import org.junit.Test;
 
 public class ParabolicSarIndicatorTest {
@@ -104,5 +114,73 @@ public class ParabolicSarIndicatorTest {
         assertDecimalEquals(sar.getValue(3), value);
         assertDecimalEquals(sar.getValue(4), 0.08 * (11 - value) + value);
         assertDecimalEquals(sar.getValue(5), 11);
+    }
+
+    @Test
+    public void shouldCalculateSARMatchingKnownFTSE100ExampleFromTradingCompany() throws IOException {
+        Iterable<CSVRecord> pricesFromFile = getCsvRecords("/FTSE100MiniOneMinutePrices-2017-04-27.csv");
+
+        List<Tick> ticks = new ArrayList<Tick>();
+        for(CSVRecord price : pricesFromFile) {
+            ticks.add(new MockTick(new Double(price.get(5)), new Double(price.get(11)), new Double(price.get(9)), new Double(price.get(7))));
+        }
+
+        //Price CSV field mappings
+        //5 = opening bid, 7 = lowest bid, 9 = highest bid, 11 = closing bid
+
+        ParabolicSarIndicator sar = new ParabolicSarIndicator(new MockTimeSeries(ticks), 1);
+
+        Iterable<CSVRecord> expectedSARsFromFile = getCsvRecords("/FTSE100MiniOneMinute-Expected-SARs-From-IGIndex-2017-04-27.csv");
+
+        int i = 0;
+        for(CSVRecord expectedSAR : expectedSARsFromFile) {
+            final Double expected = new Double(expectedSAR.get(2));
+            final Decimal actual = sar.getValue(i);
+            System.out.println("Expected=" + expected + " Actual=" + actual);
+
+            assertDecimalEquals(actual, expected);
+            i++;
+        }
+
+    }
+
+    @Test
+    public void shouldCalculateSARMatchingKnownFTSE100ExampleFromSpreadsheet() throws IOException {
+        Iterable<CSVRecord> pricesFromFile = getCsvRecords("/FTSE100MiniOneMinutePrices-2017-04-27.csv");
+
+        List<Tick> ticks = new ArrayList<Tick>();
+        for(CSVRecord price : pricesFromFile) {
+            ticks.add(new MockTick(new Double(price.get(5)), new Double(price.get(11)), new Double(price.get(9)), new Double(price.get(7))));
+        }
+
+        //Price CSV field mappings
+        //5 = opening bid, 7 = lowest bid, 9 = highest bid, 11 = closing bid
+
+        ParabolicSarIndicator sar = new ParabolicSarIndicator(new MockTimeSeries(ticks), 1);
+
+        Iterable<CSVRecord> expectedSARsFromFile = getCsvRecords("/FTSE100MiniOneMinute-Expected-SARs-From-Spreadsheet-2017-04-27.csv");
+
+        int i = 0;
+        for(CSVRecord expectedSAR : expectedSARsFromFile) {
+            if(i > 3) {
+               //ignore 1st four records as they are zero
+                final Double expected = new Double(expectedSAR.get(2));
+                final Decimal actual = sar.getValue(i);
+                System.out.println("Expected=" + expected + " Actual=" + actual);
+
+                assertDecimalEquals(actual, expected);
+            }
+            i++;
+        }
+    }
+
+
+
+
+    private Iterable<CSVRecord> getCsvRecords(String fileName) throws IOException {
+        InputStreamReader priceCSVReader = new InputStreamReader(
+                this.getClass().getResourceAsStream(fileName));
+
+        return CSVFormat.DEFAULT.parse(priceCSVReader);
     }
 }
