@@ -22,9 +22,9 @@
  */
 package eu.verdelhan.ta4j.trading.rules;
 
-import eu.verdelhan.ta4j.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import eu.verdelhan.ta4j.Rule;
 
 /**
  * An abstract trading {@link Rule rule}.
@@ -65,6 +65,8 @@ public abstract class AbstractRule implements Rule {
      * @param isSatisfied true if the rule is satisfied, false otherwise
      */
     protected void traceIsSatisfied(int index, boolean isSatisfied) {
-        log.trace("{}#isSatisfied({}): {}", getClass().getSimpleName(), index, isSatisfied);
+        if (log.isTraceEnabled()) {
+            log.trace("{}#isSatisfied({}): {}", getClass().getSimpleName(), index, isSatisfied);
+        }
     }
 }
