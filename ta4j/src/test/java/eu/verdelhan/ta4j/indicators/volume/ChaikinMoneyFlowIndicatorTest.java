@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -25,9 +25,9 @@ package eu.verdelhan.ta4j.indicators.volume;
 import static eu.verdelhan.ta4j.TATestsUtils.assertDecimalEquals;
 import eu.verdelhan.ta4j.Tick;
 import eu.verdelhan.ta4j.TimeSeries;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 public class ChaikinMoneyFlowIndicatorTest {
@@ -35,8 +35,8 @@ public class ChaikinMoneyFlowIndicatorTest {
     @Test
     public void getValue() {
         
-        DateTime now = DateTime.now();
-        List<Tick> ticks = new ArrayList<Tick>();
+        ZonedDateTime now = ZonedDateTime.now();
+        List<Tick> ticks = new ArrayList<>();
         ticks.add(new Tick(now, "0", "62.34", "61.37", "62.15", "7849.025"));
         ticks.add(new Tick(now, "0", "62.05", "60.69", "60.81", "11692.075"));
         ticks.add(new Tick(now, "0", "62.27", "60.10", "60.45", "10575.307"));

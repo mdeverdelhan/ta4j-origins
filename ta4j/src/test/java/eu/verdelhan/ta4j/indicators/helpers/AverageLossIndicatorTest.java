@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -54,7 +54,7 @@ public class AverageLossIndicatorTest {
     }
 
     @Test
-    public void averageLossMustReturnZeroWhenTheDataDoesntGain() {
+    public void averageLossMustReturnZeroWhenTheDataGain() {
         AverageLossIndicator averageLoss = new AverageLossIndicator(new ClosePriceIndicator(data), 4);
         assertDecimalEquals(averageLoss.getValue(3), 0);
     }
@@ -66,7 +66,7 @@ public class AverageLossIndicatorTest {
     }
 
     @Test
-    public void averageGainWhenIndexIsZeroMustBeZero() {
+    public void averageLossWhenIndexIsZeroMustBeZero() {
         AverageLossIndicator averageLoss = new AverageLossIndicator(new ClosePriceIndicator(data), 10);
         assertDecimalEquals(averageLoss.getValue(0), 0);
     }

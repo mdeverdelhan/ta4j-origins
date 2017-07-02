@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -29,6 +29,7 @@ import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.indicators.simple.ClosePriceIndicator;
 import eu.verdelhan.ta4j.indicators.simple.ConstantIndicator;
 import eu.verdelhan.ta4j.indicators.trackers.SMAIndicator;
+import eu.verdelhan.ta4j.indicators.trackers.ZLEMAIndicator;
 import eu.verdelhan.ta4j.mocks.MockTimeSeries;
 import eu.verdelhan.ta4j.trading.rules.OverIndicatorRule;
 import eu.verdelhan.ta4j.trading.rules.UnderIndicatorRule;
@@ -138,6 +139,22 @@ public class CachedIndicatorTest {
         SMAIndicator sma = new SMAIndicator(new ClosePriceIndicator(timeSeries), 2);
         for (int i = 0; i < 5; i++) {
             assertDecimalEquals(sma.getValue(i), 1);
+        }
+    }
+    
+    @Test
+    public void recursiveCachedIndicatorOnMovingTimeSeriesShouldNotCauseStackOverflow() {
+        // Added to check issue #120: https://github.com/mdeverdelhan/ta4j/issues/120
+        // See also: CachedIndicator#getValue(int index)
+        series = new MockTimeSeries();
+        series.setMaximumTickCount(5);
+        assertEquals(5, series.getTickCount());
+
+        ZLEMAIndicator zlema = new ZLEMAIndicator(new ClosePriceIndicator(series), 1);
+        try {
+            assertDecimalEquals(zlema.getValue(8), "9");
+        } catch (Throwable t) {
+            fail(t.getMessage());
         }
     }
 }

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +23,7 @@
 package eu.verdelhan.ta4j;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 /**
  * Utility class for {@code Decimal} tests.
@@ -60,5 +61,15 @@ public class TATestsUtils {
      */
     public static void assertDecimalEquals(Decimal actual, double expected) {
         assertEquals(expected, actual.toDouble(), TA_OFFSET);
+    }
+
+    /**
+     * Verifies that the actual {@code Decimal} value is not equal to the given {@code Integer} representation.
+     * @param actual the actual {@code Decimal} value
+     * @param unexpected the given {@code Integer} representation to compare the actual value to
+     * @throws AssertionError if the actual value is equal to the given {@code Integer} representation
+     */
+    public static void assertDecimalNotEquals(Decimal actual, int unexpected) {
+        assertNotEquals(Decimal.valueOf(unexpected), actual);
     }
 }

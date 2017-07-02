@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -23,6 +23,7 @@
 package eu.verdelhan.ta4j;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * An order.
@@ -146,12 +147,7 @@ public class Order implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + (this.type != null ? this.type.hashCode() : 0);
-        hash = 29 * hash + this.index;
-        hash = 29 * hash + (this.price != null ? this.price.hashCode() : 0);
-        hash = 29 * hash + (this.amount != null ? this.amount.hashCode() : 0);
-        return hash;
+        return Objects.hash(type, index, price, amount);
     }
 
     @Override

@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -73,7 +73,7 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
         // Series is not null
         
         final int removedTicksCount = series.getRemovedTicksCount();
-        final int maximumResultCount = getTimeSeries().getMaximumTickCount();
+        final int maximumResultCount = series.getMaximumTickCount();
         
         T result;
         if (index < removedTicksCount) {
@@ -84,7 +84,10 @@ public abstract class CachedIndicator<T> extends AbstractIndicator<T> {
             highestResultIndex = removedTicksCount;
             result = results.get(0);
             if (result == null) {
-                result = calculate(removedTicksCount);
+                // It should be "result = calculate(removedTicksCount);".
+                // We use "result = calculate(0);" as a workaround
+                // to fix issue #120 (https://github.com/mdeverdelhan/ta4j/issues/120).
+                result = calculate(0);
                 results.set(0, result);
             }
         } else {

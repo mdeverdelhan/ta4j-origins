@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -22,8 +22,8 @@
  */
 package eu.verdelhan.ta4j.indicators.trackers;
 
-import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.Decimal;
+import eu.verdelhan.ta4j.Indicator;
 import eu.verdelhan.ta4j.indicators.CachedIndicator;
 import eu.verdelhan.ta4j.indicators.helpers.AverageGainIndicator;
 import eu.verdelhan.ta4j.indicators.helpers.AverageLossIndicator;
@@ -31,21 +31,29 @@ import eu.verdelhan.ta4j.indicators.helpers.AverageLossIndicator;
 /**
  * Relative strength index indicator.
  * <p>
- * @see http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:relative_strength_index_rsi
+ * This calculation of RSI uses traditional moving averages
+ * as opposed to Wilder's accumulative moving average technique.
+ *
+ * <p>See reference
+ * <a href="https://www.barchart.com/education/technical-indicators#/studies/std_rsi_mod">
+ * RSI calculation</a>.
+ *
+ * @see SmoothedRSIIndicator
  */
 public class RSIIndicator extends CachedIndicator<Decimal> {
 
-    private AverageGainIndicator averageGainIndicator;
-
-    private AverageLossIndicator averageLossIndicator;
-
-    private final int timeFrame;
-
+    private Indicator<Decimal> averageGainIndicator;
+    private Indicator<Decimal> averageLossIndicator;
+    
     public RSIIndicator(Indicator<Decimal> indicator, int timeFrame) {
-        super(indicator);
-        this.timeFrame = timeFrame;
-        averageGainIndicator = new AverageGainIndicator(indicator, timeFrame);
-        averageLossIndicator = new AverageLossIndicator(indicator, timeFrame);
+        this(new AverageGainIndicator(indicator, timeFrame),
+                new AverageLossIndicator(indicator, timeFrame));
+    }
+
+    public RSIIndicator(Indicator<Decimal> avgGainIndicator, Indicator<Decimal> avgLossIndicator) {
+        super(avgGainIndicator);
+        averageGainIndicator = avgGainIndicator;
+        averageLossIndicator = avgLossIndicator;
     }
 
     @Override
@@ -67,8 +75,4 @@ public class RSIIndicator extends CachedIndicator<Decimal> {
         return Decimal.HUNDRED.minus(ratio);
     }
 
-    @Override
-    public String toString() {
-        return getClass().getName() + " timeFrame: " + timeFrame;
-    }
 }
