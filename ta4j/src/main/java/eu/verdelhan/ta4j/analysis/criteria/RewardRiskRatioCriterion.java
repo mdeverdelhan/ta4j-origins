@@ -25,7 +25,7 @@ package eu.verdelhan.ta4j.analysis.criteria;
 import eu.verdelhan.ta4j.AnalysisCriterion;
 import eu.verdelhan.ta4j.TimeSeries;
 import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradingRecord;
+import eu.verdelhan.ta4j.TradesRecord;
 
 /**
  * Reward risk ratio criterion.
@@ -39,8 +39,8 @@ public class RewardRiskRatioCriterion extends AbstractAnalysisCriterion {
     private AnalysisCriterion maxDrawdown = new MaximumDrawdownCriterion();
 
     @Override
-    public double calculate(TimeSeries series, TradingRecord tradingRecord) {
-        return totalProfit.calculate(series, tradingRecord) / maxDrawdown.calculate(series, tradingRecord);
+    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
+        return totalProfit.calculate(series, tradesRecord) / maxDrawdown.calculate(series, tradesRecord);
     }
 
     @Override

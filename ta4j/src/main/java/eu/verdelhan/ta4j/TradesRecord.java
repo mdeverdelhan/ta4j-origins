@@ -1,7 +1,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014-2017 Marc de Verdelhan & respective authors (see AUTHORS)
+ * Copyright (c) 2014-2016 Marc de Verdelhan & respective authors (see AUTHORS)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -20,35 +20,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eu.verdelhan.ta4j.analysis.criteria;
-
-import eu.verdelhan.ta4j.TimeSeries;
-import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradesRecord;
+package eu.verdelhan.ta4j;
 
 /**
- * Number of ticks criterion.
- * <p>
- * Returns the number of ticks during the provided trade(s).
+ * A collection of trades, used by {@link AnalysisCriterion analysis criteria} to calculate statistics
  */
-public class NumberOfTicksCriterion extends AbstractAnalysisCriterion {
+public interface TradesRecord extends Iterable<Trade> {
 
-    @Override
-    public double calculate(TimeSeries series, TradesRecord tradesRecord) {
-        int nTicks = 0;
-        for (Trade trade : tradesRecord) {
-            nTicks += calculate(series, trade);
-        }
-        return nTicks;
-    }
+	/**
+	 * @return The amount of record trades
+	 */
+	public int getTradeCount();
 
-    @Override
-    public double calculate(TimeSeries series, Trade trade) {
-        return (1 + trade.getExit().getIndex()) - trade.getEntry().getIndex();
-    }
-
-    @Override
-    public boolean betterThan(double criterionValue1, double criterionValue2) {
-        return criterionValue1 < criterionValue2;
-    }
+	/**
+	 * @return The trades that have not yet been closed and therefore not yet been recorded
+	 */
+	public Iterable<Trade> getOpenTrades();
+	
 }

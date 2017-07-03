@@ -22,15 +22,16 @@
  */
 package eu.verdelhan.ta4j.analysis;
 
-import eu.verdelhan.ta4j.Indicator;
-import eu.verdelhan.ta4j.Decimal;
-import eu.verdelhan.ta4j.TimeSeries;
-import eu.verdelhan.ta4j.Trade;
-import eu.verdelhan.ta4j.TradingRecord;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import eu.verdelhan.ta4j.Decimal;
+import eu.verdelhan.ta4j.Indicator;
+import eu.verdelhan.ta4j.TimeSeries;
+import eu.verdelhan.ta4j.Trade;
+import eu.verdelhan.ta4j.TradesRecord;
 
 /**
  * The cash flow.
@@ -59,11 +60,11 @@ public class CashFlow implements Indicator<Decimal> {
     /**
      * Constructor.
      * @param timeSeries the time series
-     * @param tradingRecord the trading record
+     * @param tradesRecord the trading record
      */
-    public CashFlow(TimeSeries timeSeries, TradingRecord tradingRecord) {
+    public CashFlow(TimeSeries timeSeries, TradesRecord tradesRecord) {
         this.timeSeries = timeSeries;
-        calculate(tradingRecord);
+        calculate(tradesRecord);
         fillToTheEnd();
     }
 
@@ -115,8 +116,8 @@ public class CashFlow implements Indicator<Decimal> {
      * Calculates the cash flow for a trading record.
      * @param tradingRecord the trading record
      */
-    private void calculate(TradingRecord tradingRecord) {
-        for (Trade trade : tradingRecord.getTrades()) {
+    private void calculate(TradesRecord tradesRecord) {
+        for (Trade trade : tradesRecord) {
             // For each trade...
             calculate(trade);
         }

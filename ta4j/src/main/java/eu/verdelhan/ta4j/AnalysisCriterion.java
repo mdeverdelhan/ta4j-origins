@@ -47,7 +47,7 @@ public interface AnalysisCriterion {
      * @param tradingRecord a trading record
      * @return the criterion value for the trades
      */
-    double calculate(TimeSeries series, TradingRecord tradingRecord);
+    double calculate(TimeSeries series, TradesRecord tradesRecord);
 
     /**
      * @param series the time series
