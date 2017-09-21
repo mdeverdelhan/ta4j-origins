@@ -1,3 +1,13 @@
+---
+
+## Important note
+
+Ta4j is not maintained by Marc de Verdelhan anymore. Future PRs and issues will not be treated here. See [#192](https://github.com/mdeverdelhan/ta4j/issues/192) for more information. This repository is kept for archival purposes and may be used as documentation for ta4j 0.9 (which is a stable version).
+
+The community decided to take over the project and continue to maintain it. The new repository is available at https://github.com/ta4j/ta4j.
+
+---
+
 # ta4j [![Build Status](https://img.shields.io/travis/mdeverdelhan/ta4j.svg)](https://travis-ci.org/mdeverdelhan/ta4j) [![Chat on Riot.im](https://img.shields.io/badge/chat-riot.im-green.svg)](https://riot.im/app/#/room/#ta4j:matrix.org)
 
 ***Technical Analysis For Java***
@@ -5,12 +15,6 @@
 ![Ta4 main chart](https://raw.githubusercontent.com/wiki/mdeverdelhan/ta4j/img/ta4j_main_chart.png)
 
 Ta4j is an open source Java library for [technical analysis](http://en.wikipedia.org/wiki/Technical_analysis). It provides the basic components for creation, evaluation and execution of trading strategies.
-
----
-
-**Important note:** _Ta4j is stable and usable in version 0.9. However, due to lack of time, the project is not maintained anymore. Future PRs and issues will not be treated. See [#192](https://github.com/mdeverdelhan/ta4j/issues/192)._
-
----
 
 ### Features
 
