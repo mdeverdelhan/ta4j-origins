@@ -52,7 +52,7 @@ The current snapshot version is `0.10-SNAPSHOT`.
 
 The [wiki](https://github.com/mdeverdelhan/ta4j/wiki) is the best place to start learning about ta4j.
 
-Of course you can ask anything [via Twitter](http://twitter.com/MarcdeVerdelhan). For more detailed questions, please use the [issues tracker](http://github.com/mdeverdelhan/ta4j/issues).
+Of course you can ask anything [via 𝕏](http://x.com/MarcdeVerdelhan). For more detailed questions, please use the [issues tracker](http://github.com/mdeverdelhan/ta4j/issues).
 
 ### Contributing to ta4j
 
@@ -60,6 +60,6 @@ Here are some ways for you to contribute to ta4j:
 
   * [Create tickets for bugs and new features](http://github.com/mdeverdelhan/ta4j/issues) and comment on the ones that you are interested in.
   * [Fork this repository](http://help.github.com/forking/) and submit pull requests.
-  * Consider donating for new feature development. Bitcoin address: `13BMqpqbzJ62LjMWcPGWrTrdocvGqifdJ3`
+  * Consider donating for new feature development.
 
 See also: the [contribution policy](.github/CONTRIBUTING.md).
